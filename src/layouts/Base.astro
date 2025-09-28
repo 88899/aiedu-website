@@ -31,6 +31,8 @@ if (theme.fonts.font_family.secondary) {
 
 const { title, meta_title, description, image, noindex, canonical } =
   Astro.props;
+
+import Loading from '@/components/Loading.astro';
 ---
 
 <!doctype html>
@@ -169,6 +171,9 @@ const { title, meta_title, description, image, noindex, canonical } =
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
+
+    <Loading />
+
     {/* google tag manager noscript */}
     {
       config.google_tag_manager.enable && (

@@ -1,0 +1,154 @@
+---
+// 从config.json导入配置（确保路径正确）
+import config from "@/config/config.json";
+
+// 解构配置参数，默认值兼容处理
+const { enablePreLoad = false, textPreLoad = "Loading" } = config.siteConfig || {};
+---
+
+{enablePreLoad && (
+  <>
+    {/* 加载动画样式（精简并确保优先级） */}
+    <style is:global>
+      #loading {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999999;
+        background: #fff;
+        transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        pointer-events: auto;
+      }
+
+      .loader {
+        width: 250px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: helvetica, arial, sans-serif;
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #00a96e;
+        letter-spacing: 0.2em;
+        user-select: none;
+      }
+
+      .loader::before,
+      .loader::after {
+        content: "";
+        display: block;
+        width: 15px;
+        height: 15px;
+        background: #00a96e;
+        position: absolute;
+        animation: load .7s infinite alternate ease-in-out;
+        will-change: left, height, width;
+      }
+
+      .loader::before { top: 0 }
+      .loader::after { bottom: 0 }
+
+      @keyframes load {
+        0% { left: 0; height: 30px; width: 15px }
+        50% { height: 8px; width: 40px }
+        100% { left: 235px; height: 30px; width: 15px }
+      }
+
+      #loading.close {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none;
+      }
+
+      .io-black-mode #loading {
+        background: #111;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .loader::before, .loader::after { animation: none; }
+        #loading { transition: none; }
+      }
+    </style>
+
+    {/* 加载动画容器（固定在DOM中，仅通过class控制显示） */}
+    <div id="loading" role="progressbar" aria-label="页面加载中">
+      <div class="loader">{textPreLoad}</div>
+    </div>
+
+    {/* 客户端脚本（核心优化：强化事件监听和状态控制） */}
+    <script client:load>
+      (function() {
+        // 稳定获取加载元素（每次操作都重新查询DOM）
+        const getLoading = () => document.getElementById('loading');
+        // 标记是否已触发隐藏（避免重复执行）
+        let hasHidden = false;
+
+        // 隐藏加载动画（核心函数）
+        const hideLoading = () => {
+          const loading = getLoading();
+          if (loading && !loading.classList.contains('close') && !hasHidden) {
+            loading.classList.add('close');
+            hasHidden = true; // 标记为已隐藏
+          }
+        };
+
+        // 显示加载动画（导航开始时执行）
+        const showLoading = () => {
+          const loading = getLoading();
+          if (loading) {
+            loading.classList.remove('close');
+            hasHidden = false; // 重置隐藏状态
+          }
+        };
+
+        // 1. 初始页面加载完成（全量刷新时）
+        window.addEventListener('load', () => {
+          const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300;
+          setTimeout(hideLoading, delay);
+        });
+
+        // 2. 处理Astro客户端导航（关键修复）
+        // 导航开始时显示（点击链接时）
+        document.addEventListener('astro:navigate', showLoading);
+        // 导航完成后隐藏（页面内容渲染完成）
+        document.addEventListener('astro:after-swap', () => {
+          const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300;
+          setTimeout(hideLoading, delay);
+        });
+
+        // 3. 兼容DOMContentLoaded（额外保险）
+        window.addEventListener('DOMContentLoaded', () => {
+          if (!hasHidden) hideLoading();
+        });
+
+        // 4. 强制超时机制（无论任何情况，8秒后必隐藏）
+        const safetyTimeout = setTimeout(() => {
+          hideLoading();
+        }, 8000);
+
+        // 5. 导航成功后清除超时（避免提前隐藏）
+        document.addEventListener('astro:after-swap', () => {
+          clearTimeout(safetyTimeout);
+        });
+
+        // 6. 监听页面可见性变化（如切换标签页后返回）
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible' && !hasHidden) {
+            hideLoading();
+          }
+        });
+      })();
+    </script>
+  </>
+)};

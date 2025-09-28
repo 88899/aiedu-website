@@ -21,9 +21,9 @@
 .navbar-nav {
   @apply text-center lg:text-left;
 }
-
+/* 20250928 add font-medium*/
 .nav-link {
-  @apply block p-3 py-2 text-[15px] text-text-dark transition hover:text-primary md:px-2 lg:inline-block;
+  @apply block p-3 py-2 text-[15px] text-text-dark transition hover:text-primary md:px-2 lg:inline-block font-medium;
 
   &.active {
     @apply relative;
