@@ -261,7 +261,7 @@ select:invalid {
     @apply h-6 w-6;
 
     svg {
-      @apply text-[#FA7398];
+      @apply text-[#48be73];
     }
   }
 }
@@ -295,7 +295,7 @@ select:invalid {
 
 @keyframes shadow-pulse {
   0% {
-    box-shadow: 0 0 0 0px rgba(254, 96, 25, 0.7);
+    box-shadow: 0 0 0 0px rgba(111, 240, 158, 0.7);
   }
   70% {
     box-shadow: 0 0 0 35px rgba(254, 96, 25, 0);
@@ -307,7 +307,7 @@ select:invalid {
 
 @keyframes shadow-pulse-2 {
   0% {
-    box-shadow: 0 0 0 0px rgba(254, 96, 25, 0.7);
+    box-shadow: 0 0 0 0px rgba(111, 240, 158, 0.7);
   }
   70% {
     box-shadow: 0 0 0 20px rgba(254, 96, 25, 0);
@@ -448,7 +448,7 @@ select:invalid {
 
 /* tag */
 .tag {
-  @apply inline-block h-8 rounded-3xl border border-primary bg-[#FAEBE1] px-3.5 py-2 text-sm leading-none text-primary transition-all hover:bg-primary hover:text-white;
+  @apply inline-block h-8 rounded-3xl border border-primary bg-[#8bd5c7] px-3.5 py-2 text-sm leading-none text-primary transition-all hover:bg-primary hover:text-white;
 }
 
 /* featured-posts */
