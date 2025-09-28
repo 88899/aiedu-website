@@ -15,7 +15,7 @@ const Projects = ({ projects }) => {
                 } `}
               >
                 <div className="relative inline-flex h-24 w-24 items-center justify-center p-3">
-                  <span className="project-icon text-[#48be73]">
+                  <span className="project-icon text-[#3eb09e]">
                     {" "}
                     <FeatherIcon className="font-semibold" />
                   </span>

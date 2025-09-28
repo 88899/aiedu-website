@@ -261,7 +261,7 @@ select:invalid {
     @apply h-6 w-6;
 
     svg {
-      @apply text-[#48be73];
+      @apply text-[#3eb09e];
     }
   }
 }
@@ -295,7 +295,7 @@ select:invalid {
 
 @keyframes shadow-pulse {
   0% {
-    box-shadow: 0 0 0 0px rgba(111, 240, 158, 0.7);
+    box-shadow: 0 0 0 0px rgba(14, 240, 158, 0.7);
   }
   70% {
     box-shadow: 0 0 0 35px rgba(254, 96, 25, 0);
@@ -307,7 +307,7 @@ select:invalid {
 
 @keyframes shadow-pulse-2 {
   0% {
-    box-shadow: 0 0 0 0px rgba(111, 240, 158, 0.7);
+    box-shadow: 0 0 0 0px rgba(14, 240, 158, 0.7);
   }
   70% {
     box-shadow: 0 0 0 20px rgba(254, 96, 25, 0);
